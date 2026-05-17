@@ -1,0 +1,934 @@
+/* ============================================
+   My Day - 메인 스타일시트
+   레이아웃 + 컴포넌트
+============================================ */
+
+/* ── 1. Base ──────────────────────────────── */
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--bg-base);
+  min-height: 100vh;
+  transition: background-color var(--transition-base),
+              color var(--transition-base);
+}
+
+/* 키보드 사용자만 보이는 본문 건너뛰기 링크 */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  z-index: 1000;
+  transition: top var(--transition-base);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* 공용 포커스 링 */
+:where(button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── 2. Header ────────────────────────────── */
+.app-header {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-header__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.app-title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.app-title__logo {
+  font-size: 22px;
+}
+
+.app-header__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.today-display {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 3. Buttons ───────────────────────────── */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  height: 36px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+.button--primary {
+  background-color: var(--primary);
+  color: var(--text-on-primary);
+}
+
+.button--primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.button--ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.button--ghost:hover:not(:disabled) {
+  background-color: var(--bg-surface-hover);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.button--danger {
+  background-color: transparent;
+  color: var(--danger);
+}
+
+.button--danger:hover:not(:disabled) {
+  background-color: var(--danger-soft);
+}
+
+.button:disabled {
+  opacity: 0.5;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 16px;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.icon-button:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text);
+}
+
+.icon-button__icon[hidden] {
+  display: none;
+}
+
+/* ── 4. Mobile Tabs (헤더 하단) ───────────── */
+.mobile-tabs {
+  display: none;
+  border-top: 1px solid var(--border);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.mobile-tabs__tab {
+  flex: 1;
+  height: 44px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+.mobile-tabs__tab.is-active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* ── 5. Main Layout ───────────────────────── */
+.app-main {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-8);
+  display: grid;
+  grid-template-columns: var(--schedule-width) 1fr;
+  gap: var(--space-6);
+}
+
+/* ── 6. Panel ─────────────────────────────── */
+.panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.panel__header--row {
+  justify-content: space-between;
+}
+
+.panel__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ── 7. Calendar ──────────────────────────── */
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.calendar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.calendar__label {
+  font-size: var(--text-md);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.calendar__weekday {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: var(--space-2) 0;
+}
+
+.calendar__weekday--sun {
+  color: var(--danger);
+}
+
+.calendar__weekday--sat {
+  color: var(--primary);
+}
+
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar__cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--space-2) 0;
+  gap: var(--space-1);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  background-color: transparent;
+  color: var(--text);
+  transition: background-color var(--transition-fast);
+}
+
+.calendar__cell:hover:not(:disabled) {
+  background-color: var(--bg-surface-hover);
+}
+
+.calendar__cell.is-other-month {
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+.calendar__cell.is-today {
+  background-color: var(--primary-soft);
+  font-weight: 600;
+}
+
+.calendar__cell.is-selected {
+  background-color: var(--primary);
+  color: var(--text-on-primary);
+}
+
+.calendar__cell.is-selected .calendar__dot {
+  background-color: var(--text-on-primary);
+}
+
+.calendar__dots {
+  display: flex;
+  gap: 2px;
+}
+
+.calendar__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-color: var(--text-muted);
+}
+
+.calendar__dot--high {
+  background-color: var(--priority-high);
+}
+
+.calendar__dot--normal {
+  background-color: var(--priority-normal);
+}
+
+.calendar__dot--low {
+  background-color: var(--priority-low);
+}
+
+/* ── 8. Today List (선택 날짜 일정) ───────── */
+.today-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.today-list__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.today-list__divider {
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
+
+.today-list__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.schedule-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-left: 4px solid var(--priority-normal);
+  background-color: var(--bg-surface-hover);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+              transform var(--transition-base);
+  text-align: left;
+  width: 100%;
+}
+
+.schedule-card:hover {
+  background-color: var(--primary-soft);
+  transform: translateY(-1px);
+}
+
+.schedule-card--high { border-left-color: var(--priority-high); }
+.schedule-card--low {
+  border-left-color: var(--priority-low);
+  border-left-width: 2px;
+}
+
+.schedule-card.is-done {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.schedule-card__time {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  min-width: 48px;
+}
+
+.schedule-card__title {
+  font-size: var(--text-sm);
+  color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 9. Todo Controls ─────────────────────── */
+.todo-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.filter-tabs {
+  display: inline-flex;
+  background-color: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  gap: 2px;
+}
+
+.filter-tabs__tab {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.filter-tabs__tab.is-active {
+  background-color: var(--bg-surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+.todo-controls__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.select-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.select-field__select {
+  height: 32px;
+  padding: 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.select-field__select:hover {
+  border-color: var(--border-strong);
+}
+
+/* ── 10. Todo List & Card ─────────────────── */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.todo-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--priority-normal);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base),
+              transform var(--transition-base);
+  animation: fade-slide-in var(--transition-slow);
+}
+
+.todo-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.todo-card--high { border-left-color: var(--priority-high); }
+.todo-card--low {
+  border-left-color: var(--priority-low);
+  border-left-width: 2px;
+}
+
+.todo-card.is-done {
+  opacity: 0.6;
+}
+
+.todo-card.is-done .todo-card__title {
+  text-decoration: line-through;
+}
+
+.todo-card__checkbox {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--success);
+  cursor: pointer;
+}
+
+.todo-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.todo-card__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  background-color: var(--bg-base);
+  color: var(--text-muted);
+  border-radius: var(--radius-full);
+}
+
+.priority-badge--high {
+  background-color: var(--warning-soft);
+  color: var(--warning);
+}
+
+.priority-badge--normal {
+  background-color: var(--bg-base);
+  color: var(--text-muted);
+}
+
+.priority-badge--low {
+  background-color: var(--bg-base);
+  color: var(--text-muted);
+}
+
+.todo-card__title {
+  font-size: var(--text-md);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.todo-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.todo-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.todo-card__meta-item--memo {
+  align-items: flex-start;
+}
+
+.todo-card__meta-icon {
+  flex-shrink: 0;
+}
+
+.todo-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.todo-card:hover .todo-card__actions,
+.todo-card:focus-within .todo-card__actions {
+  opacity: 1;
+}
+
+.todo-card__action {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.todo-card__action:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text);
+}
+
+.todo-card__action--danger:hover {
+  background-color: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ── 11. Empty State ──────────────────────── */
+.empty-state {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* ── 12. Modal ────────────────────────────── */
+.modal {
+  width: var(--modal-width);
+  max-width: calc(100vw - var(--space-8));
+  max-height: calc(100vh - var(--space-8));
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal[open] {
+  animation: modal-pop var(--transition-base);
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - var(--space-8));
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.modal__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.modal__body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow-y: auto;
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--border);
+  background-color: var(--bg-surface);
+}
+
+/* ── 13. Form Fields ──────────────────────── */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-field__label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.form-field__required {
+  color: var(--danger);
+  margin-left: 2px;
+}
+
+.form-field__input {
+  height: 40px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-base);
+  color: var(--text);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+
+.form-field__input:hover {
+  border-color: var(--border-strong);
+}
+
+.form-field__input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.form-field__input--textarea {
+  height: auto;
+  min-height: 80px;
+  padding: var(--space-3);
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.form-field__input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.form-field__error {
+  font-size: var(--text-xs);
+  color: var(--danger);
+  margin: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.radio-group {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.radio-option {
+  flex: 1;
+  cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio-option__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  height: 40px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  background-color: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.radio-option:hover .radio-option__label {
+  border-color: var(--border-strong);
+}
+
+.radio-option input[type="radio"]:checked + .radio-option__label {
+  background-color: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.radio-option input[type="radio"]:focus-visible + .radio-option__label {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ── 14. FAB (모바일 플로팅 액션 버튼) ──── */
+.fab {
+  display: none;
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: 56px;
+  height: 56px;
+  font-size: 28px;
+  color: var(--text-on-primary);
+  background-color: var(--primary);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-lg);
+  z-index: 20;
+  transition: background-color var(--transition-fast),
+              transform var(--transition-base);
+}
+
+.fab:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+/* ── 15. Animations ───────────────────────── */
+@keyframes fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── 16. Responsive ───────────────────────── */
+
+/* 태블릿: 일정표 좁게 */
+@media (max-width: 1023px) {
+  :root {
+    --schedule-width: 320px;
+  }
+
+  .app-header__inner,
+  .app-main {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+/* 모바일: 1-Column + 탭 전환 + FAB */
+@media (max-width: 767px) {
+  .app-header__inner {
+    padding: 0 var(--space-4);
+  }
+
+  .mobile-tabs {
+    display: flex;
+  }
+
+  .app-main {
+    grid-template-columns: 1fr;
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .panel {
+    padding: var(--space-4);
+  }
+
+  /* 탭으로 표시할 패널만 보임 */
+  [data-tab-panel] {
+    display: none;
+  }
+
+  [data-tab-panel].is-active {
+    display: flex;
+  }
+
+  .todo-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .todo-controls__right {
+    justify-content: space-between;
+  }
+
+  /* 모달은 풀스크린에 가깝게 */
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  /* FAB 표시 */
+  .fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 데스크톱 추가 버튼은 숨김 */
+  #add-task-btn {
+    display: none;
+  }
+
+  /* 카드 액션 항상 표시 */
+  .todo-card__actions {
+    opacity: 1;
+  }
+}
+
+/* 데스크톱: 모바일 탭 hidden 무력화 */
+@media (min-width: 768px) {
+  [data-tab-panel] {
+    display: flex !important;
+  }
+}

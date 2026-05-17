@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="My Day - 가벼운 일정 및 할 일 관리 웹앱" />
+  <title>My Day</title>
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+  />
+
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="app-header">
+    <div class="app-header__inner">
+      <h1 class="app-title">
+        <span class="app-title__logo" aria-hidden="true">📋</span>
+        My Day
+      </h1>
+
+      <div class="app-header__meta">
+        <time id="today-display" class="today-display" datetime=""></time>
+        <button
+          id="theme-toggle"
+          class="icon-button"
+          type="button"
+          aria-label="다크 모드 전환"
+          aria-pressed="false"
+        >
+          <span class="icon-button__icon" data-theme-icon="light" aria-hidden="true">🌙</span>
+          <span class="icon-button__icon" data-theme-icon="dark" aria-hidden="true" hidden>☀️</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="mobile-tabs" role="tablist" aria-label="화면 전환">
+      <button class="mobile-tabs__tab is-active" role="tab" aria-selected="true" data-tab="schedule">
+        📅 일정표
+      </button>
+      <button class="mobile-tabs__tab" role="tab" aria-selected="false" data-tab="todo">
+        ✅ 할 일
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" class="app-main">
+    <!-- 좌측: 일정표 패널 -->
+    <section
+      id="schedule-panel"
+      class="panel schedule-panel"
+      aria-labelledby="schedule-heading"
+      data-tab-panel="schedule"
+    >
+      <header class="panel__header">
+        <h2 id="schedule-heading" class="panel__title">
+          <span aria-hidden="true">📅</span> 일정표
+        </h2>
+      </header>
+
+      <div class="calendar" aria-label="월간 캘린더">
+        <div class="calendar__nav">
+          <button id="calendar-prev" class="icon-button" type="button" aria-label="이전 달">◀</button>
+          <span id="calendar-label" class="calendar__label" aria-live="polite">2026년 5월</span>
+          <button id="calendar-next" class="icon-button" type="button" aria-label="다음 달">▶</button>
+        </div>
+
+        <div class="calendar__weekdays" role="row">
+          <span role="columnheader" class="calendar__weekday calendar__weekday--sun">일</span>
+          <span role="columnheader" class="calendar__weekday">월</span>
+          <span role="columnheader" class="calendar__weekday">화</span>
+          <span role="columnheader" class="calendar__weekday">수</span>
+          <span role="columnheader" class="calendar__weekday">목</span>
+          <span role="columnheader" class="calendar__weekday">금</span>
+          <span role="columnheader" class="calendar__weekday calendar__weekday--sat">토</span>
+        </div>
+
+        <div id="calendar-grid" class="calendar__grid" role="grid" aria-label="날짜 선택">
+          <!-- JS에서 날짜 셀 생성 -->
+        </div>
+      </div>
+
+      <section class="today-list" aria-labelledby="today-list-heading">
+        <h3 id="today-list-heading" class="today-list__heading">
+          <span class="today-list__divider" aria-hidden="true"></span>
+          <span id="selected-date-label">오늘 일정</span>
+          <span class="today-list__divider" aria-hidden="true"></span>
+        </h3>
+        <ul id="today-list" class="today-list__items" aria-live="polite">
+          <!-- JS에서 일정 카드 생성 -->
+        </ul>
+        <p id="today-list-empty" class="empty-state" hidden>
+          이 날짜에 등록된 일정이 없어요.
+        </p>
+      </section>
+    </section>
+
+    <!-- 우측: Todo 패널 -->
+    <section
+      id="todo-panel"
+      class="panel todo-panel"
+      aria-labelledby="todo-heading"
+      data-tab-panel="todo"
+    >
+      <header class="panel__header panel__header--row">
+        <h2 id="todo-heading" class="panel__title">
+          <span aria-hidden="true">✅</span> Todo List
+        </h2>
+        <button id="add-task-btn" class="button button--primary" type="button">
+          <span aria-hidden="true">+</span> 새 할 일
+        </button>
+      </header>
+
+      <div class="todo-controls">
+        <div class="filter-tabs" role="tablist" aria-label="상태 필터">
+          <button class="filter-tabs__tab is-active" role="tab" aria-selected="true" data-filter="all">
+            전체
+          </button>
+          <button class="filter-tabs__tab" role="tab" aria-selected="false" data-filter="active">
+            진행 중
+          </button>
+          <button class="filter-tabs__tab" role="tab" aria-selected="false" data-filter="done">
+            완료
+          </button>
+        </div>
+
+        <div class="todo-controls__right">
+          <label class="select-field">
+            <span class="select-field__label">정렬</span>
+            <select id="sort-select" class="select-field__select">
+              <option value="createdAt">등록순</option>
+              <option value="priority">중요도순</option>
+              <option value="date">날짜순</option>
+            </select>
+          </label>
+
+          <button id="clear-done-btn" class="button button--ghost" type="button">
+            완료 삭제
+          </button>
+        </div>
+      </div>
+
+      <ul id="todo-list" class="todo-list" aria-live="polite">
+        <!-- JS에서 Todo 카드 생성 -->
+      </ul>
+
+      <p id="todo-list-empty" class="empty-state" hidden>
+        할 일이 없어요. 새 할 일을 추가해 보세요.
+      </p>
+    </section>
+  </main>
+
+  <!-- 추가 / 수정 모달 -->
+  <dialog id="task-modal" class="modal" aria-labelledby="modal-title">
+    <form id="task-form" class="modal__form" method="dialog" novalidate>
+      <header class="modal__header">
+        <h2 id="modal-title" class="modal__title">새 할 일 추가</h2>
+        <button
+          type="button"
+          class="icon-button"
+          data-modal-close
+          aria-label="닫기"
+        >✕</button>
+      </header>
+
+      <div class="modal__body">
+        <input type="hidden" name="id" />
+
+        <div class="form-field">
+          <label for="field-title" class="form-field__label">
+            제목 <span class="form-field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="field-title"
+            name="title"
+            type="text"
+            class="form-field__input"
+            maxlength="80"
+            required
+            autocomplete="off"
+            placeholder="예: 스터디 미팅 자료 준비"
+          />
+          <p class="form-field__error" data-error-for="title" role="alert" hidden></p>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="field-date" class="form-field__label">날짜</label>
+            <input
+              id="field-date"
+              name="date"
+              type="date"
+              class="form-field__input"
+            />
+          </div>
+          <div class="form-field">
+            <label for="field-time" class="form-field__label">시간</label>
+            <input
+              id="field-time"
+              name="time"
+              type="time"
+              class="form-field__input"
+            />
+          </div>
+        </div>
+
+        <fieldset class="form-field form-field--radio">
+          <legend class="form-field__label">중요도</legend>
+          <div class="radio-group" role="radiogroup">
+            <label class="radio-option">
+              <input type="radio" name="priority" value="low" />
+              <span class="radio-option__label">
+                <span aria-hidden="true">🟢</span> 낮음
+              </span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="priority" value="normal" checked />
+              <span class="radio-option__label">
+                <span aria-hidden="true">🟡</span> 보통
+              </span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="priority" value="high" />
+              <span class="radio-option__label">
+                <span aria-hidden="true">🔴</span> 높음
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="form-field">
+          <label for="field-location" class="form-field__label">장소</label>
+          <input
+            id="field-location"
+            name="location"
+            type="text"
+            class="form-field__input"
+            maxlength="100"
+            autocomplete="off"
+            placeholder="예: 스터디룸 A / Zoom"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="field-memo" class="form-field__label">메모</label>
+          <textarea
+            id="field-memo"
+            name="memo"
+            class="form-field__input form-field__input--textarea"
+            maxlength="300"
+            rows="3"
+            placeholder="부가 설명을 입력하세요"
+          ></textarea>
+        </div>
+      </div>
+
+      <footer class="modal__footer">
+        <button type="button" class="button button--ghost" data-modal-close>취소</button>
+        <button type="submit" class="button button--primary">저장</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- 모바일 플로팅 액션 버튼 -->
+  <button
+    id="fab-add"
+    class="fab"
+    type="button"
+    aria-label="새 할 일 추가"
+  >+</button>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
