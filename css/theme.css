@@ -5,7 +5,7 @@
 
 :root {
   /* ── 컬러: 라이트 모드 ── */
-  --bg-base: #0480fd;
+  --bg-base: #F5F6F7;
   --bg-surface: #FFFFFF;
   --bg-surface-hover: #FAFBFC;
   --border: #E4E6EA;
@@ -15,7 +15,7 @@
   --text-muted: #6B6F76;
   --text-on-primary: #FFFFFF;
 
-  --primary: #4A6FA5;
+  --primary: #14d121;
   --primary-hover: #3F608F;
   --primary-soft: #E8EEF6;
 
